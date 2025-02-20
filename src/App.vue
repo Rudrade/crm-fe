@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" style="margin-top: 5%">
     <List />
   </div>
 </template>
