@@ -24,12 +24,13 @@
     </table>
 
     <button class="btn btn-secondary" @click="openModalClient(null)">Criar Cliente</button>
+    <button class="btn btn-primary" @click="getClients()" style="margin-left: 5px;"><i class="bi bi-arrow-clockwise"></i></button>
 
     <ClientModal ref="clientModal"/>
 </template>
 
 <script>
-import axios from "axios"
+import axios from 'axios';
 import ClientModal from "@/components/ClientModal.vue";
 
 export default {
@@ -40,6 +41,7 @@ export default {
     },
     methods: {
         async getClients() {
+            this.clients = [];
             const response = await axios.get("http://localhost:8080/crm/api/client");
             
             console.log(response);
