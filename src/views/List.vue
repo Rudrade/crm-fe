@@ -15,7 +15,10 @@
                 <td>{{ client.firstName }}</td>
                 <td>{{ client.lastName }}</td>
                 <td>{{ client.email }}</td>
-                <td><button class="btn btn-secondary" @click="openModalClient(client)"><i class="bi bi-pencil-square"></i></button></td>
+                <td>
+                    <button class="btn btn-secondary" @click="openModalClient(client)"><i class="bi bi-pencil-square"></i></button>
+                    <button class="btn btn-danger" @click="deleteClient(client.id)" style="margin-left: 5px;"><i class="bi bi-trash3"></i></button>
+                </td>
             </tr>
         </tbody>
         <div v-if="clients.length === 0" style="color: red; font-weight: bold;" class="">
@@ -52,6 +55,9 @@ export default {
         },
         openModalClient(client) {
             this.$refs.clientModal.showModal(client);
+        },
+        deleteClient(id) {
+            axios.delete("http://localhost:8080/crm/api/client/"+id);
         }
     },
     beforeMount() {
