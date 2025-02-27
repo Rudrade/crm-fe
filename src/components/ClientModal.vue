@@ -37,6 +37,9 @@ export default {
             show: false
         }
     },
+    props: {
+        showToast: Function
+    },
     methods: {
         showModal(client) {
             if (client !== undefined) {
@@ -61,6 +64,7 @@ export default {
                 client
             )
             .then(() => {
+                this.showToast("Cliente "+(this.client.id===0?"criado":"atualizado")+" com sucesso.", false);
                 this.closeModal();
             });
         }
