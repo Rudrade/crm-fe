@@ -27,9 +27,12 @@
     </table>
 
     <button class="btn btn-secondary" @click="openModalClient(null)">Criar Cliente</button>
-    <button class="btn btn-primary" @click="getClients()" style="margin-left: 5px;"><i class="bi bi-arrow-clockwise"></i></button>
 
-    <ClientModal ref="clientModal"/>
+    <ClientModal 
+        ref="clientModal"
+        :showToast="showToast"
+        :listClient="getClients"
+    />
 </template>
 
 <script>
@@ -42,22 +45,34 @@ export default {
             clients: []
         }
     },
+    props: {
+        showToast: Function
+    },
     methods: {
         async getClients() {
             this.clients = [];
-            const response = await axios.get("http://localhost:8080/crm/api/client");
+            const response = await axios.get("http://localhost:8080/crm/api/client")
+                .catch(() => {
+                    this.showToast("Ocorreu um erro ao buscar listagem", true);
+                });
             
             console.log(response);
 
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 response.data.map(client => this.clients.push(client));
+            } else {
+                this.showToast("Ocorreu um erro ao buscar listagem", true);
             }
         },
         openModalClient(client) {
             this.$refs.clientModal.showModal(client);
         },
         deleteClient(id) {
-            axios.delete("http://localhost:8080/crm/api/client/"+id);
+            axios.delete("http://localhost:8080/crm/api/client/"+id)
+                .then(() => {
+                    this.showToast("Cliente apagado com sucesso", false);
+                    this.getClients();
+                });
         }
     },
     beforeMount() {
