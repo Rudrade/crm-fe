@@ -26,7 +26,10 @@
         </div>
     </table>
 
-    <button class="btn btn-secondary" @click="openModalClient(null)">Criar Cliente</button>
+    <div>
+        <button class="btn btn-secondary" @click="openModalClient(null)" style="float: left;">Criar Cliente</button>
+        <button class="btn btn-success" style="float: right;" @click="exportToCsv"><i class="bi bi-file-earmark-spreadsheet"></i></button>
+    </div>
 
     <ClientModal 
         ref="clientModal"
@@ -72,6 +75,23 @@ export default {
                 .then(() => {
                     this.showToast("Cliente apagado com sucesso", false);
                     this.getClients();
+                });
+        },
+        exportToCsv() {
+            axios.get("http://localhost:8080/crm/api/client/download")
+                .then((response) => {
+                    const blob = new Blob([response.data], { type: "text/plain" });
+                    const link = document.createElement("a");
+                    const url = URL.createObjectURL(blob);
+                    link.href = url;
+                    link.download = "example.csv";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                })
+                .catch(() => {
+                    this.showToast("Ocorreu um erro ao buscar ficheiro", true);
                 });
         }
     },
