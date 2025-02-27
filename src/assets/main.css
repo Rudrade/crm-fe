@@ -79,3 +79,9 @@
 .toast:not(.show){  /* Obrigar a mostrar, para ultrapssar css do bootstrap*/
     display: block !important;
 }
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-top: 1%;
+}

@@ -27,9 +27,12 @@
     </table>
 
     <button class="btn btn-secondary" @click="openModalClient(null)">Criar Cliente</button>
-    <button class="btn btn-primary" @click="getClients()" style="margin-left: 5px;"><i class="bi bi-arrow-clockwise"></i></button>
 
-    <ClientModal ref="clientModal" :showToast="showToast"/>
+    <ClientModal 
+        ref="clientModal"
+        :showToast="showToast"
+        :listClient="getClients"
+    />
 </template>
 
 <script>
@@ -65,7 +68,11 @@ export default {
             this.$refs.clientModal.showModal(client);
         },
         deleteClient(id) {
-            axios.delete("http://localhost:8080/crm/api/client/"+id);
+            axios.delete("http://localhost:8080/crm/api/client/"+id)
+                .then(() => {
+                    this.showToast("Cliente apagado com sucesso", false);
+                    this.getClients();
+                });
         }
     },
     beforeMount() {

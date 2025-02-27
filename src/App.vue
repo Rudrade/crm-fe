@@ -6,6 +6,8 @@
     @closeToast="closeToast"
   />
 
+  <h1 class="header">CRM</h1>
+
   <div class="container-fluid justify-content-center" style="margin-top: 5%; display: inline-flex;">
     <div class="menu">
       <ul>

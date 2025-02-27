@@ -13,8 +13,9 @@
                 <input type="text" class="form-control" id="inLastName" v-model="client.lastName"/>
             </div>
             <div class="mb-3">
-                <label for="inEmail" class="form-label">E-Mail</label>
-                <input type="email" class="form-control" id="inEmail" v-model="client.email"/>
+                <label for="inEmail" class="form-label">E-Mail *</label>
+                <input type="email" class="form-control" id="inEmail" v-model="client.email" style="margin-bottom: 0%;"/>
+                <span style="color: red; margin: 0%" v-if="emailError">Este campo é obrigatório</span>
             </div>
             <button class="btn btn-secondary" @click="closeModal()">Fechar</button>
             <button class="btn btn-primary" @click="postClient()">Gravar</button>
@@ -34,11 +35,13 @@ export default {
                 lastName: "",
                 email: ""
             },
-            show: false
+            show: false,
+            emailError: false
         }
     },
     props: {
-        showToast: Function
+        showToast: Function,
+        listClient: Function
     },
     methods: {
         showModal(client) {
@@ -60,12 +63,19 @@ export default {
                 return;
             }
 
+            if (client.email == null) {
+                this.emailError = true;
+                return;
+            }
+            this.emailError = false;
+
             axios.post("http://localhost:8080/crm/api/client", 
                 client
             )
             .then(() => {
                 this.showToast("Cliente "+(this.client.id===0?"criado":"atualizado")+" com sucesso.", false);
                 this.closeModal();
+                this.listClient();
             });
         }
     }
